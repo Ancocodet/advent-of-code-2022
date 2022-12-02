@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'de.ancozockt'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "https://repo.enonic.com/public/"
+    }
+}
+
+ext {
+    javaMainClass = "de.ancozockt.advent.Main"
+}
+
+application {
+    mainClassName = javaMainClass
+}
+
+dependencies {
+    implementation 'org.projectlombok:lombok:1.18.22'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation 'com.google.common:google-collect:0.5'
+    implementation 'org.reflections:reflections:0.10.2'
+    testImplementation 'org.reflections:reflections:0.10.2'
+
+    implementation 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+    testImplementation 'org.apache.commons:commons-lang3:3.12.0'
+    testImplementation 'org.apache.commons:commons-math3:3.6.1'
+    testImplementation 'com.google.common:google-collect:0.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
