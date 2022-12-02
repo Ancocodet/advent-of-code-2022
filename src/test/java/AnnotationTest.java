@@ -1,5 +1,6 @@
 import de.ancozockt.advent.interfaces.ADay;
 import de.ancozockt.advent.interfaces.AdventDay;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
@@ -9,9 +10,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+@Slf4j
 public class AnnotationTest {
 
-    private final int DAYS = 1;
+    private final int DAYS = 2;
 
     @Test
     public void testAnnotations(){
@@ -31,17 +33,19 @@ public class AnnotationTest {
             Long[] outputs = null;
             try {
                 outputs = readOutputs(aDay.day());
-            }catch (Exception exception){ }
+            }catch (Exception ignored){ }
 
             assert outputs != null;
 
-            String part1 = adventDay.part1(readFromFile("inputs/" + aDay.day() + "-input"));
+            String part1 = adventDay.part1(readFromFile("input/" + aDay.day() + "-input"));
             try {
+                log.info(aDay.day() + " Part 1");
                 assert Long.parseLong(part1) == outputs[0];
             }catch (NumberFormatException ignored){}
 
-            String part2 = adventDay.part2(readFromFile("inputs/" + aDay.day() + "-input"));
+            String part2 = adventDay.part2(readFromFile("input/" + aDay.day() + "-input"));
             try {
+                log.info(aDay.day() + " Part 2");
                 assert Long.parseLong(part2) == outputs[1];
             }catch (NumberFormatException ignored){}
         });
@@ -50,7 +54,7 @@ public class AnnotationTest {
     private Long[] readOutputs(String day){
         ArrayList<Long> outputs = new ArrayList<>();
 
-        BufferedReader reader = readFromFile("outputs/" + day + "-output");
+        BufferedReader reader = readFromFile("output/" + day + "-output");
         String line;
         try {
             while ((line = reader.readLine()) != null){

@@ -8,21 +8,18 @@ public class FileTest {
 
     @Test
     public void testInputs(){
-        String path = "src/test/resources/inputs";
+        String path = "src/test/resources/input";
 
         File file = new File(path);
-        String absolutePath = file.getAbsolutePath();
 
         assertTrue(file.exists());
     }
 
     @Test
     public void testOutputs(){
-        String path = "src/test/resources/outputs";
+        String path = "src/test/resources/output";
 
         File file = new File(path);
-        String absolutePath = file.getAbsolutePath();
-
         assertTrue(file.exists());
     }
 

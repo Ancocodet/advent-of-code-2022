@@ -52,5 +52,5 @@ jobs:
       uses: sylvanld/action-storage@v1
       with:
         storage-branch: answers
-        src: outputs/*
+        src: output/*
         dst: /

@@ -11,11 +11,12 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Main {
+
     public static void main(String[] args) {
         Reflections reflections = new Reflections("de.ancozockt.advent.days");
         FileHelper fileHelper = new FileHelper();
 
-        File folder = new File("outputs");
+        File folder = new File("output");
         if(!folder.exists()){
             folder.mkdirs();
         }
@@ -24,7 +25,7 @@ public class Main {
             ADay aDay = aClass.getAnnotation(ADay.class);
             AdventDay adventDay = (AdventDay) createNewInstanceOfClass(aClass);
 
-            File file = new File("outputs", aDay.day() + ".txt");
+            File file = new File("output", aDay.day() + ".txt");
             if(!file.exists()){
                 try {
                     file.createNewFile();
@@ -34,16 +35,14 @@ public class Main {
             try {
                 FileWriter fileWriter = new FileWriter(file);
 
-                fileWriter.write("Part1: " + Objects.requireNonNull(adventDay).part1(fileHelper.getFileInput("inputs/" + aDay.day() + "-input")));
-                fileWriter.write("\nPart2: " + Objects.requireNonNull(adventDay).part2(fileHelper.getFileInput("inputs/" + aDay.day() + "-input")));
+                fileWriter.write("Part1: " + Objects.requireNonNull(adventDay).part1(fileHelper.getFileInput("input/" + aDay.day() + "-input")));
+                fileWriter.write("\nPart2: " + Objects.requireNonNull(adventDay).part2(fileHelper.getFileInput("input/" + aDay.day() + "-input")));
 
                 fileWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         });
-
     }
 
     private static <T> T createNewInstanceOfClass(Class<T> someClass) {
