@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Slf4j
 public class AnnotationTest {
 
-    private final int DAYS = 2;
+    private final int DAYS = 3;
 
     @Test
     public void testAnnotations(){
