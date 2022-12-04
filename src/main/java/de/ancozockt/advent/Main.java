@@ -14,6 +14,11 @@ import java.util.Objects;
 public class Main {
 
     public static void main(String[] args) {
+        if(!System.getenv().containsKey("AOC_TOKEN")){
+            System.exit(-1);
+            return;
+        }
+
         Reflections reflections = new Reflections("de.ancozockt.advent.days");
 
         File folder = new File("output");
