@@ -1,9 +1,11 @@
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Order(1)
 public class FileTest {
 
     @Test

@@ -1,6 +1,7 @@
-import de.ancozockt.advent.interfaces.ADay;
-import de.ancozockt.advent.interfaces.AdventDay;
+import de.ancozockt.aoclib.annotations.AInputData;
+import de.ancozockt.aoclib.interfaces.IAdventDay;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
@@ -11,56 +12,57 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 @Slf4j
+@Order(2)
 public class AnnotationTest {
 
-    private final int DAYS = 3;
+    private final int DAYS = 4;
 
     @Test
     public void testAnnotations(){
         Reflections reflections = new Reflections("de.ancozockt.advent.days");
 
-        assert reflections.getTypesAnnotatedWith(ADay.class).size() == DAYS;
+        assert reflections.getTypesAnnotatedWith(AInputData.class).size() == DAYS;
     }
 
     @Test
     public void testResponse(){
         Reflections reflections = new Reflections("de.ancozockt.advent.days");
 
-        reflections.getTypesAnnotatedWith(ADay.class).forEach(aClass -> {
-            ADay aDay = aClass.getAnnotation(ADay.class);
-            AdventDay adventDay = (AdventDay) createNewInstanceOfClass(aClass);
+        reflections.getTypesAnnotatedWith(AInputData.class).forEach(aClass -> {
+            AInputData inputData = aClass.getAnnotation(AInputData.class);
+            IAdventDay adventDay = (IAdventDay) createNewInstanceOfClass(aClass);
 
             Long[] outputs = null;
             try {
-                outputs = readOutputs(aDay.day());
+                outputs = readOutputs(inputData.day());
             }catch (Exception ignored){ }
 
             assert outputs != null;
 
-            String part1 = adventDay.part1(readFromFile("input/" + aDay.day() + "-input"));
+            String part1 = adventDay.part1(readFromFile("input/day" + inputData.day() + "-input"));
             try {
-                log.info(aDay.day() + " Part 1");
+                log.info(inputData.day() + " Part 1");
                 assert Long.parseLong(part1) == outputs[0];
             }catch (NumberFormatException ignored){}
 
-            String part2 = adventDay.part2(readFromFile("input/" + aDay.day() + "-input"));
+            String part2 = adventDay.part2(readFromFile("input/day" + inputData.day() + "-input"));
             try {
-                log.info(aDay.day() + " Part 2");
+                log.info(inputData.day() + " Part 2");
                 assert Long.parseLong(part2) == outputs[1];
             }catch (NumberFormatException ignored){}
         });
     }
 
-    private Long[] readOutputs(String day){
+    private Long[] readOutputs(int day){
         ArrayList<Long> outputs = new ArrayList<>();
 
-        BufferedReader reader = readFromFile("output/" + day + "-output");
+        BufferedReader reader = readFromFile("output/day" + day + "-output");
         String line;
         try {
             while ((line = reader.readLine()) != null){
                 outputs.add(Long.parseLong(line));
             }
-        }catch (IOException ignored) {}
+        }catch (IOException ignored) { }
 
         return outputs.toArray(new Long[]{});
     }

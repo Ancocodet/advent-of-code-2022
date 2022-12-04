@@ -1,15 +1,14 @@
 package de.ancozockt.advent.days;
 
-import de.ancozockt.advent.interfaces.ADay;
-import de.ancozockt.advent.interfaces.AdventDay;
+import de.ancozockt.aoclib.annotations.AInputData;
+import de.ancozockt.aoclib.interfaces.IAdventDay;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
-@ADay(day = "day1")
-public class Day1 implements AdventDay {
+@AInputData(day = 1, year = 2022)
+public class Day1 implements IAdventDay {
 
     @Override
     public String part1(BufferedReader reader) {

@@ -1,14 +1,14 @@
 package de.ancozockt.advent.days;
 
-import de.ancozockt.advent.interfaces.ADay;
-import de.ancozockt.advent.interfaces.AdventDay;
+import de.ancozockt.aoclib.annotations.AInputData;
+import de.ancozockt.aoclib.interfaces.IAdventDay;
 import lombok.Getter;
 
 import java.io.BufferedReader;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ADay(day = "day2")
-public class Day2 implements AdventDay {
+@AInputData(day = 2, year = 2022)
+public class Day2 implements IAdventDay {
 
     @Override
     public String part1(BufferedReader reader) {

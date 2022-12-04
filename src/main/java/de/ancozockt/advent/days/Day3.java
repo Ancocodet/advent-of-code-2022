@@ -1,12 +1,12 @@
 package de.ancozockt.advent.days;
 
-import de.ancozockt.advent.interfaces.ADay;
-import de.ancozockt.advent.interfaces.AdventDay;
+import de.ancozockt.aoclib.annotations.AInputData;
+import de.ancozockt.aoclib.interfaces.IAdventDay;
 
 import java.io.BufferedReader;
 
-@ADay(day = "day3")
-public class Day3 implements AdventDay {
+@AInputData(day = 3, year = 2022)
+public class Day3 implements IAdventDay {
 
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
