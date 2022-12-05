@@ -12,7 +12,7 @@ repositories {
         url = "https://repo.enonic.com/public/"
     }
     maven {
-        url "https://repo.ancozockt.info/snapshots"
+        url = "https://repo.ancozockt.info/snapshots"
     }
 }
 

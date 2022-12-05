@@ -17,19 +17,33 @@ public class DayTest {
     @MethodSource("getDays")
     public void testDay(IAdventDay adventDay){
         AInputData inputData = adventDay.getClass().getAnnotation(AInputData.class);
-        Long[] outputs = readOutputs(inputData.day());
+        String[] outputs = readOutputs(inputData.day());
 
         assert outputs != null;
 
-        String part1 = adventDay.part1(readFromFile("input/day" + inputData.day() + "-input"));
         try {
-            assert Long.parseLong(part1) == outputs[0];
-        }catch (NumberFormatException ignored){}
+            String part1 = adventDay.part1(readFromFile("input/day" + inputData.day() + "-input"));
+            try {
+                long answer = Long.parseLong(part1);
+                long expected = Long.parseLong(outputs[0]);
 
-        String part2 = adventDay.part2(readFromFile("input/day" + inputData.day() + "-input"));
-        try {
-            assert Long.parseLong(part2) == outputs[1];
-        }catch (NumberFormatException ignored){}
+                assert answer == expected;
+            }catch (NumberFormatException exception){
+                assert part1.equals(outputs[0]);
+            }
+        }catch (NullPointerException ignored){}
+
+        try{
+            String part2 = adventDay.part2(readFromFile("input/day" + inputData.day() + "-input"));
+            try {
+                long answer = Long.parseLong(part2);
+                long expected = Long.parseLong(outputs[1]);
+
+                assert answer == expected;
+            }catch (NumberFormatException exception){
+                assert part2.equals(outputs[1]);
+            }
+        }catch (NullPointerException ignored){}
     }
 
     static Stream<IAdventDay> getDays(){
@@ -37,18 +51,18 @@ public class DayTest {
         return reflections.getTypesAnnotatedWith(AInputData.class).stream().map(aClass -> (IAdventDay) createNewInstanceOfClass(aClass));
     }
 
-    private Long[] readOutputs(int day){
-        ArrayList<Long> outputs = new ArrayList<>();
+    private String[] readOutputs(int day){
+        ArrayList<String> outputs = new ArrayList<>();
 
         BufferedReader reader = readFromFile("output/day" + day + "-output");
         String line;
         try {
             while ((line = reader.readLine()) != null){
-                outputs.add(Long.parseLong(line));
+                outputs.add(line);
             }
         }catch (IOException ignored) { }
 
-        return outputs.toArray(new Long[]{});
+        return outputs.toArray(new String[]{});
     }
 
     private BufferedReader readFromFile(String fileName){
