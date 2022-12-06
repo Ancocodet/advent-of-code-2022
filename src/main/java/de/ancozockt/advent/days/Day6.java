@@ -36,6 +36,34 @@ public class Day6 implements IAdventDay {
 
     @Override
     public String part2(BufferedReader bufferedReader) {
-        return null;
+        int marker = 0;
+
+        try {
+            String input = bufferedReader.readLine();
+
+            for(int i = 0; (i + 14) < input.length(); i++){
+                String signal = input.substring(i, i + 14);
+
+                int doubleCount = 0;
+                for(int c = 0; c < signal.length(); c++){
+                    for(int d = 0; d < signal.length(); d++){
+                        if(c != d){
+                            if(signal.charAt(c) == signal.charAt(d)){
+                                doubleCount++;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(doubleCount == 0){
+                    marker = i + 14;
+                    break;
+                }
+            }
+
+        } catch (IOException ignored) {}
+
+        return String.valueOf(marker);
     }
 }
