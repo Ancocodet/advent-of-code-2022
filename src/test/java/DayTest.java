@@ -1,5 +1,6 @@
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reflections.Reflections;
@@ -11,15 +12,20 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+@Slf4j
 public class DayTest {
 
     @ParameterizedTest
     @MethodSource("getDays")
     public void testDay(IAdventDay adventDay){
         AInputData inputData = adventDay.getClass().getAnnotation(AInputData.class);
+
+        System.out.println("======= Testing Day: " + inputData.day() + " =======");
+
         String[] outputs = readOutputs(inputData.day());
 
         assert outputs != null;
+        System.out.println("Output does exist: ✓");
 
         try {
             String part1 = adventDay.part1(readFromFile("input/day" + inputData.day() + "-input"));
@@ -31,7 +37,9 @@ public class DayTest {
             }catch (NumberFormatException exception){
                 assert part1.equals(outputs[0]);
             }
-        }catch (NullPointerException ignored){}
+            System.out.println("Part-1: ✓");
+        }catch (NullPointerException exception){ }
+
 
         try{
             String part2 = adventDay.part2(readFromFile("input/day" + inputData.day() + "-input"));
@@ -43,7 +51,8 @@ public class DayTest {
             }catch (NumberFormatException exception){
                 assert part2.equals(outputs[1]);
             }
-        }catch (NullPointerException ignored){}
+            System.out.println("Part-2: ✓");
+        }catch (NullPointerException ignored){ }
     }
 
     static Stream<IAdventDay> getDays(){
