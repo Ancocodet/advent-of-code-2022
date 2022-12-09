@@ -33,8 +33,11 @@ public class DayTest {
                 long answer = Long.parseLong(part1);
                 long expected = Long.parseLong(outputs[0]);
 
+                System.out.println("Part 1: " + answer + " | Expected: " + expected);
+
                 assert answer == expected;
             }catch (NumberFormatException exception){
+                System.out.println("Part 1: " + part1 + " | Expected: " + outputs[0]);
                 assert part1.equals(outputs[0]);
             }
             System.out.println("Part-1: ✓");
@@ -47,8 +50,10 @@ public class DayTest {
                 long answer = Long.parseLong(part2);
                 long expected = Long.parseLong(outputs[1]);
 
+                System.out.println("Part 2: " + answer + " | Expected: " + expected);
                 assert answer == expected;
             }catch (NumberFormatException exception){
+                System.out.println("Part 2: " + part2 + " | Expected: " + outputs[1]);
                 assert part2.equals(outputs[1]);
             }
             System.out.println("Part-2: ✓");
