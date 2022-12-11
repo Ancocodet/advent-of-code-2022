@@ -41,7 +41,9 @@ public class DayTest {
                 assert part1.equals(outputs[0]);
             }
             System.out.println("Part-1: ✓");
-        }catch (NullPointerException exception){ }
+        }catch (NullPointerException exception){
+            exception.printStackTrace();
+        }
 
 
         try{
