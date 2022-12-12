@@ -1,2 +1,2 @@
-Part1: -1
-Part2: null
+Part1: 380
+Part2: 375
