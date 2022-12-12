@@ -64,7 +64,15 @@ public class DayTest {
 
     static Stream<IAdventDay> getDays(){
         Reflections reflections = new Reflections("de.ancozockt.advent.days");
-        return reflections.getTypesAnnotatedWith(AInputData.class).stream().map(aClass -> (IAdventDay) createNewInstanceOfClass(aClass));
+        return reflections.getTypesAnnotatedWith(AInputData.class).stream().sorted((o1, o2) -> {
+            if(o1.getAnnotation(AInputData.class).day() > o2.getAnnotation(AInputData.class).day()){
+                return 1;
+            }else if(o1.getAnnotation(AInputData.class).day() < o2.getAnnotation(AInputData.class).day()){
+                return -1;
+            }else{
+                return 0;
+            }
+        }).map(aClass -> (IAdventDay) createNewInstanceOfClass(aClass));
     }
 
     private String[] readOutputs(int day){
