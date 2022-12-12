@@ -4,8 +4,6 @@ import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
 import de.ancozockt.aoclib.interfaces.IInputHelper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,7 +61,7 @@ public class Day12 implements IAdventDay {
     }
 
 
-    public int pathFinder(Point start, Point end, HashMap<Point, Integer> heights) {
+    public static int pathFinder(Point start, Point end, HashMap<Point, Integer> heights) {
         LinkedList<Point> queue = new LinkedList<>();
         queue.add(start);
 
@@ -79,22 +77,22 @@ public class Day12 implements IAdventDay {
             }
 
             for(Point neighbor : current.getNeighbors()){
-                if(heights.containsKey(neighbor)){
-                    int height = heights.get(neighbor);
-                    int currentHeight = heights.get(current);
+                if(!heights.containsKey(neighbor) || steps.containsKey(neighbor))
+                    continue;
 
-                    if(height == currentHeight
-                            || height == currentHeight + 1
-                            || height == currentHeight - 1){
-                        if(!steps.containsKey(neighbor)){
-                            steps.put(neighbor, currentSteps + 1);
-                            queue.add(neighbor);
-                        }
-                    }
+                int height = heights.get(neighbor);
+                int currentHeight = heights.get(current);
+
+                if(height == currentHeight
+                        || height == currentHeight + 1
+                        || height == currentHeight - 1){
+                    steps.put(neighbor, currentSteps + 1);
+                    queue.add(neighbor);
                 }
+
             }
         }
 
-        return Integer.MAX_VALUE;
+        return -1;
     }
 }

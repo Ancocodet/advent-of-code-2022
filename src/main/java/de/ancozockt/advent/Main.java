@@ -18,7 +18,6 @@ public class Main {
             return;
         }
 
-
         Reflections reflections = new Reflections("de.ancozockt.advent.days");
 
         File folder = new File("output");
