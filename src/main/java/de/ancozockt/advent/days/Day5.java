@@ -2,6 +2,7 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,12 +13,12 @@ import java.util.*;
 public class Day5 implements IAdventDay {
 
     @Override
-    public String part1(BufferedReader reader) {
+    public String part1(IInputHelper inputHelper) {
         HashMap<Integer, String[]> crates = new HashMap<>();
         List<Movement> movements = new ArrayList<>();
 
 
-        for(String line : reader.lines().toList()){
+        for(String line : inputHelper.getInput().lines().toList()){
             String[] results = line.split("(?<=\\G.{" + 4 + "})");
 
             if(!line.startsWith("move") && !line.startsWith(" 1")){
@@ -73,12 +74,12 @@ public class Day5 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader reader) {
+    public String part2(IInputHelper inputHelper) {
         HashMap<Integer, String[]> crates = new HashMap<>();
         List<Movement> movements = new ArrayList<>();
 
 
-        for(String line : reader.lines().toList()){
+        for(String line : inputHelper.getInput().lines().toList()){
             String[] results = line.split("(?<=\\G.{" + 4 + "})");
 
             if(!line.startsWith("move") && !line.startsWith(" 1")){

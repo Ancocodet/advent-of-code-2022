@@ -2,6 +2,7 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 
 import java.io.BufferedReader;
 import java.util.HashMap;
@@ -15,14 +16,14 @@ public class Day9 implements IAdventDay {
     record Point(int x, int y) {}
 
     @Override
-    public String part1(BufferedReader bufferedReader) {
+    public String part1(IInputHelper inputHelper) {
         Point head = new Point(0, 0);
         Point tail = new Point(0, 0);
 
         Set<Point> visitedByTail = new LinkedHashSet<>();
         visitedByTail.add(tail);
 
-        for(String line : bufferedReader.lines().toList()){
+        for(String line : inputHelper.getInput().lines().toList()){
             String[] movement = line.split(" ");
 
             int steps = Integer.parseInt(movement[1]);
@@ -68,7 +69,7 @@ public class Day9 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader bufferedReader) {
+    public String part2(IInputHelper inputHelper) {
         Point head = new Point(0, 0);
         Point[] tails = {
             new Point(0, 0),
@@ -85,7 +86,7 @@ public class Day9 implements IAdventDay {
         Set<Point> visitedByTail = new LinkedHashSet<>();
         visitedByTail.add(tails[0]);
 
-        for(String line : bufferedReader.lines().toList()){
+        for(String line : inputHelper.getInput().lines().toList()){
             String[] movement = line.split(" ");
 
             int steps = Integer.parseInt(movement[1]);

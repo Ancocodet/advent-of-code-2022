@@ -2,6 +2,7 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 import lombok.Getter;
 
 import java.io.BufferedReader;
@@ -11,10 +12,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Day2 implements IAdventDay {
 
     @Override
-    public String part1(BufferedReader reader) {
+    public String part1(IInputHelper inputHelper) {
         AtomicInteger points = new AtomicInteger(0);
 
-        for(String line : reader.lines().toList()){
+        for(String line : inputHelper.getInput().lines().toList()){
             String[] split = line.split(" ");
 
             Response response = Response.valueOf(split[1]);
@@ -33,10 +34,10 @@ public class Day2 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader reader) {
+    public String part2(IInputHelper inputHelper) {
         AtomicInteger points = new AtomicInteger(0);
 
-        for(String line : reader.lines().toList()) {
+        for(String line : inputHelper.getInput().lines().toList()) {
             String[] split = line.split(" ");
 
             Response response = Response.valueOf(split[1]);

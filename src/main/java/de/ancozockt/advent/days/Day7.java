@@ -2,6 +2,7 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,9 +15,9 @@ import java.util.List;
 public class Day7 implements IAdventDay {
 
     @Override
-    public String part1(BufferedReader bufferedReader) {
+    public String part1(IInputHelper inputHelper) {
         HashMap<String, Directory> directories = new HashMap<>();
-        List<String> lines = bufferedReader.lines().toList();
+        List<String> lines = inputHelper.getInput().lines().toList();
 
         String currentDirectory = "";
         for(String line : lines){
@@ -62,9 +63,9 @@ public class Day7 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader bufferedReader) {
+    public String part2(IInputHelper inputHelper) {
         HashMap<String, Directory> directories = new HashMap<>();
-        List<String> lines = bufferedReader.lines().toList();
+        List<String> lines = inputHelper.getInput().lines().toList();
 
         String currentDirectory = "";
         for(String line : lines){

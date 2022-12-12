@@ -2,8 +2,10 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,13 +30,13 @@ public class Day12 implements IAdventDay {
     }
 
     @Override
-    public String part1(BufferedReader bufferedReader) {
+    public String part1(IInputHelper inputHelper) {
         HashMap<Point, Integer> heights = new HashMap<>();
 
         Point start = null;
         Point end = null;
 
-        String[] lines = bufferedReader.lines().toArray(String[]::new);
+        String[] lines = inputHelper.getInput().lines().toArray(String[]::new);
         for(int y = 0; y < lines.length; y++){
             String line = lines[y];
             for(int x = 0; x < line.length(); x++){
@@ -56,7 +58,7 @@ public class Day12 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader bufferedReader) {
+    public String part2(IInputHelper inputHelper) {
         return null;
     }
 
@@ -81,7 +83,9 @@ public class Day12 implements IAdventDay {
                     int height = heights.get(neighbor);
                     int currentHeight = heights.get(current);
 
-                    if(height == currentHeight || height == currentHeight + 1 || height == currentHeight - 1){
+                    if(height == currentHeight
+                            || height == currentHeight + 1
+                            || height == currentHeight - 1){
                         if(!steps.containsKey(neighbor)){
                             steps.put(neighbor, currentSteps + 1);
                             queue.add(neighbor);
@@ -91,6 +95,6 @@ public class Day12 implements IAdventDay {
             }
         }
 
-        return -1;
+        return Integer.MAX_VALUE;
     }
 }

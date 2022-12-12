@@ -1,7 +1,9 @@
 package de.ancozockt.advent.days;
 
+import de.ancozockt.aoclib.InputHelper;
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +13,9 @@ import java.util.HashMap;
 public class Day1 implements IAdventDay {
 
     @Override
-    public String part1(BufferedReader reader) {
+    public String part1(IInputHelper inputHelper) {
         int max = 0;
-        HashMap<Integer, Integer> calories = getCalories(reader);
+        HashMap<Integer, Integer> calories = getCalories(inputHelper.getInput());
 
         for (Integer calorie : calories.values()) {
             if (calorie > max) max = calorie;
@@ -23,8 +25,8 @@ public class Day1 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader reader) {
-        HashMap<Integer, Integer> calories = getCalories(reader);
+    public String part2(IInputHelper inputHelper) {
+        HashMap<Integer, Integer> calories = getCalories(inputHelper.getInput());
         int sum = 0;
 
         for(int amount = 0; amount < 3; amount++){

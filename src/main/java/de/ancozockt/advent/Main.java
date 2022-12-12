@@ -5,7 +5,6 @@ import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
 import org.reflections.Reflections;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,6 +17,7 @@ public class Main {
             System.exit(-1);
             return;
         }
+
 
         Reflections reflections = new Reflections("de.ancozockt.advent.days");
 
@@ -42,10 +42,10 @@ public class Main {
                 FileWriter fileWriter = new FileWriter(file);
 
                 fileWriter.write("Part1: " + Objects.requireNonNull(adventDay)
-                        .part1(inputHelper.getInput()));
+                        .part1(inputHelper));
 
                 fileWriter.write("\nPart2: " + Objects.requireNonNull(adventDay)
-                        .part2(inputHelper.getInput()));
+                        .part2(inputHelper));
 
                 fileWriter.close();
             } catch (IOException e) {

@@ -2,6 +2,7 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
@@ -13,13 +14,13 @@ import java.util.Map;
 public class Day8 implements IAdventDay {
 
     @Override
-    public String part1(BufferedReader bufferedReader) {
+    public String part1(IInputHelper inputHelper) {
         HashMap<String, Integer> map = new HashMap<>();
 
         int height = 0;
         int width = 0;
 
-        for(String line : bufferedReader.lines().toList()){
+        for(String line : inputHelper.getInput().lines().toList()){
             if(width < line.length())
                 width = line.length();
 
@@ -78,13 +79,13 @@ public class Day8 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader bufferedReader) {
+    public String part2(IInputHelper inputHelper) {
         HashMap<String, Integer> map = new HashMap<>();
 
         int height = 0;
         int width = 0;
 
-        for(String line : bufferedReader.lines().toList()){
+        for(String line : inputHelper.getInput().lines().toList()){
             if(width < line.length())
                 width = line.length();
 

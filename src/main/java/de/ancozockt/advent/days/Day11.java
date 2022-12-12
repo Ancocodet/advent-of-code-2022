@@ -3,6 +3,7 @@ package de.ancozockt.advent.days;
 import de.ancozockt.advent.utilities.days.Monkey;
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 public class Day11 implements IAdventDay {
 
     @Override
-    public String part1(BufferedReader bufferedReader) {
-        ArrayList<Monkey> monkeys = readMonkeyData(bufferedReader);
+    public String part1(IInputHelper inputHelper) {
+        ArrayList<Monkey> monkeys = readMonkeyData(inputHelper.getInput());
 
         int[] inspections = new int[monkeys.size()];
         for(int i = 0; i < 20; i++){
@@ -47,8 +48,8 @@ public class Day11 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader bufferedReader) {
-        ArrayList<Monkey> monkeys = readMonkeyData(bufferedReader);
+    public String part2(IInputHelper inputHelper) {
+        ArrayList<Monkey> monkeys = readMonkeyData(inputHelper.getInput());
 
         int lcm = lcm(monkeys.stream().map(m -> m.test).toList(), 0);
 

@@ -2,6 +2,7 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 
 import java.io.BufferedReader;
 
@@ -11,10 +12,10 @@ public class Day3 implements IAdventDay {
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
     @Override
-    public String part1(BufferedReader reader) {
+    public String part1(IInputHelper inputHelper) {
         int sum = 0;
 
-        for(String line : reader.lines().toList()) {
+        for(String line : inputHelper.getInput().lines().toList()) {
             String compartmentOne = line.substring(0, line.length() / 2);
             String compartmentTwo = line.substring(line.length() / 2);
 
@@ -35,9 +36,9 @@ public class Day3 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader reader) {
+    public String part2(IInputHelper inputHelper) {
         int sum = 0;
-        String[] lines = reader.lines().toArray(String[]::new);
+        String[] lines = inputHelper.getInput().lines().toArray(String[]::new);
 
         for(int i = 0; i < lines.length; i += 3){
             String elfOne = lines[i];

@@ -1,6 +1,7 @@
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reflections.Reflections;
@@ -27,38 +28,45 @@ public class DayTest {
         assert outputs != null;
         System.out.println("Output does exist: ✓");
 
+        TestInput testInput = new TestInput(inputData);
         try {
-            String part1 = adventDay.part1(readFromFile("input/day" + inputData.day() + "-input"));
-            try {
-                long answer = Long.parseLong(part1);
-                long expected = Long.parseLong(outputs[0]);
+            if(!outputs[0].equalsIgnoreCase("#nottestable#")) {
+                String part1 = adventDay.part1(testInput);
+                try {
+                    long answer = Long.parseLong(part1);
+                    long expected = Long.parseLong(outputs[0]);
 
-                System.out.println("Part 1: " + answer + " | Expected: " + expected);
+                    System.out.println("Part 1: " + answer + " | Expected: " + expected);
 
-                assert answer == expected;
-            }catch (NumberFormatException exception){
-                System.out.println("Part 1: " + part1 + " | Expected: " + outputs[0]);
-                assert part1.equals(outputs[0]);
+                    assert answer == expected;
+                } catch (NumberFormatException exception) {
+                    System.out.println("Part 1: " + part1 + " | Expected: " + outputs[0]);
+                    assert part1.equals(outputs[0]);
+                }
+                System.out.println("Part-1: ✓");
+            }else{
+                System.out.println("Part-2: x (could not be tested)");
             }
-            System.out.println("Part-1: ✓");
-        }catch (NullPointerException exception){
-            exception.printStackTrace();
-        }
+        }catch (NullPointerException ignored){ }
 
 
         try{
-            String part2 = adventDay.part2(readFromFile("input/day" + inputData.day() + "-input"));
-            try {
-                long answer = Long.parseLong(part2);
-                long expected = Long.parseLong(outputs[1]);
+            if(!outputs[1].equalsIgnoreCase("#nottestable#")){
+                String part2 = adventDay.part2(testInput);
+                try {
+                    long answer = Long.parseLong(part2);
+                    long expected = Long.parseLong(outputs[1]);
 
-                System.out.println("Part 2: " + answer + " | Expected: " + expected);
-                assert answer == expected;
-            }catch (NumberFormatException exception){
-                System.out.println("Part 2: " + part2 + " | Expected: " + outputs[1]);
-                assert part2.equals(outputs[1]);
+                    System.out.println("Part 2: " + answer + " | Expected: " + expected);
+                    assert answer == expected;
+                }catch (NumberFormatException exception){
+                    System.out.println("Part 2: " + part2 + " | Expected: " + outputs[1]);
+                    assert part2.equals(outputs[1]);
+                }
+                System.out.println("Part-2: ✓");
+            } else {
+                System.out.println("Part-2: x (could not be tested)");
             }
-            System.out.println("Part-2: ✓");
         }catch (NullPointerException ignored){ }
     }
 

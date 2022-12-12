@@ -2,6 +2,7 @@ package de.ancozockt.advent.days;
 
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
+import de.ancozockt.aoclib.interfaces.IInputHelper;
 
 import java.io.BufferedReader;
 import java.util.LinkedList;
@@ -11,8 +12,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Day10 implements IAdventDay {
 
     @Override
-    public String part1(BufferedReader bufferedReader) {
-        LinkedList<Integer> signals = readSignals(bufferedReader);
+    public String part1(IInputHelper inputHelper) {
+        LinkedList<Integer> signals = readSignals(inputHelper.getInput());
 
         Integer[] positions = {20, 60, 100, 140, 180, 220};
         AtomicInteger strength = new AtomicInteger(0);
@@ -25,9 +26,10 @@ public class Day10 implements IAdventDay {
     }
 
     @Override
-    public String part2(BufferedReader bufferedReader) {
-        LinkedList<Integer> signals = readSignals(bufferedReader);
+    public String part2(IInputHelper inputHelper) {
+        LinkedList<Integer> signals = readSignals(inputHelper.getInput());
 
+        StringBuilder output = new StringBuilder();
         for(int y = 0; y < 6; y++) {
             StringBuilder line = new StringBuilder();
             for(int x = 0; x < 40; x++) {
@@ -38,10 +40,10 @@ public class Day10 implements IAdventDay {
                     line.append(" ");
                 }
             }
-            System.out.println(line.toString());
+            output.append(line + System.lineSeparator());
         }
 
-        return "Read output";
+        return output.toString();
     }
 
     private LinkedList<Integer> readSignals(BufferedReader bufferedReader){
