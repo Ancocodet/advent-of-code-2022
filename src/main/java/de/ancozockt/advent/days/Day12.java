@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-@AInputData(day = 12, year = 2020)
+@AInputData(day = 12, year = 2022)
 public class Day12 implements IAdventDay {
 
     public record Point(int x, int y) {
@@ -57,15 +57,46 @@ public class Day12 implements IAdventDay {
 
     @Override
     public String part2(IInputHelper inputHelper) {
-        return null;
+        HashMap<Point, Integer> heights = new HashMap<>();
+
+        Point start = null;
+        Point end = null;
+
+        String[] lines = inputHelper.getInput().lines().toArray(String[]::new);
+        for(int y = 0; y < lines.length; y++){
+            String line = lines[y];
+            for(int x = 0; x < line.length(); x++){
+                switch (line.charAt(x)){
+                    case 'S' -> {
+                        start = new Point(x, y);
+                        heights.put(start, 'a' - 1);
+                    }
+                    case 'E' -> {
+                        end = new Point(x, y);
+                        heights.put(end, 'z' + 1);
+                    }
+                    default -> heights.put(new Point(x, y), (int) line.charAt(x));
+                }
+            }
+        }
+
+        int shortest = Integer.MAX_VALUE;
+        for(Point point : heights.keySet()){
+            if(heights.get(point) == 'a') {
+                shortest = Math.min(shortest, pathFinder(point, end, heights));
+            }
+        }
+
+        return Integer.toString(shortest);
     }
 
 
     public static int pathFinder(Point start, Point end, HashMap<Point, Integer> heights) {
         LinkedList<Point> queue = new LinkedList<>();
-        queue.add(start);
-
         HashMap<Point, Integer> steps = new HashMap<>();
+        HashMap<Point, Point> parent = new HashMap<>();
+
+        queue.add(start);
         steps.put(start, 0);
 
         while(!queue.isEmpty()){
@@ -73,26 +104,28 @@ public class Day12 implements IAdventDay {
             int currentSteps = steps.get(current);
 
             if(current.equals(end)){
-                return currentSteps;
+                ArrayList<Point> path = new ArrayList<>();
+                while(parent.containsKey(current)) {
+                    path.add(current);
+                    current = parent.get(current);
+                }
+                return path.size();
             }
 
             for(Point neighbor : current.getNeighbors()){
-                if(!heights.containsKey(neighbor) || steps.containsKey(neighbor))
+                if(!heights.containsKey(neighbor) || heights.get(neighbor) > heights.get(current) + 1)
                     continue;
 
-                int height = heights.get(neighbor);
-                int currentHeight = heights.get(current);
-
-                if(height == currentHeight
-                        || height == currentHeight + 1
-                        || height == currentHeight - 1){
-                    steps.put(neighbor, currentSteps + 1);
-                    queue.add(neighbor);
+                if(currentSteps < steps.getOrDefault(neighbor, Integer.MAX_VALUE)){
+                    if(!steps.containsKey(neighbor)){
+                        steps.put(neighbor, currentSteps + 1);
+                        parent.put(neighbor, current);
+                        queue.add(neighbor);
+                    }
                 }
-
             }
         }
 
-        return -1;
+        return Integer.MAX_VALUE;
     }
 }

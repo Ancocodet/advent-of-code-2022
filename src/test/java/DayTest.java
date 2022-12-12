@@ -23,6 +23,8 @@ public class DayTest {
 
         System.out.println("======= Testing Day: " + inputData.day() + " =======");
 
+        assert inputData.year() == 2022;
+
         String[] outputs = readOutputs(inputData.day());
 
         assert outputs != null;
