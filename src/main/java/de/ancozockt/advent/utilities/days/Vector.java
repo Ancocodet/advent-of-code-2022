@@ -2,10 +2,11 @@ package de.ancozockt.advent.utilities.days;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
-@Getter @AllArgsConstructor
+@Getter @AllArgsConstructor @Setter
 public class Vector implements Comparable<Vector> {
 
     public static Vector DOWN = new Vector(0, 1);
@@ -25,6 +26,10 @@ public class Vector implements Comparable<Vector> {
 
     public Vector sum(Vector vector){
         return new Vector(this.x + vector.getX(), this.y + vector.getY());
+    }
+
+    public int dist(Vector o) {
+        return Math.abs(x - o.x) + Math.abs(y - o.y);
     }
 
     public Vector copy(){
