@@ -42,6 +42,12 @@ public class Day19 implements IAdventDay {
     record Recipe(int ore, int clay, int obsidian) { }
 
     record Robot(int ore, int clay, int obsidian, int geode) {
+
+        static Robot ORE = new Robot(1, 0, 0, 0);
+        static Robot CLAY = new Robot(0, 1, 0, 0);
+        static Robot OBSIDIAN = new Robot(0, 0, 1, 0);
+        static Robot GEODE = new Robot(0, 0, 0, 1);
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -126,7 +132,10 @@ public class Day19 implements IAdventDay {
 
             List<Possibility> possibilities = getPossibilities(blueprint, currentState);
             if(possibilities.size() == 0){
-                queue.add(new Move(currentState, currentRobots, move.minute() + 1, null));
+                Move newMove = new Move(currentState, currentRobots, move.minute() + 1, null);
+                if(!seen.contains(newMove.hashCode())){
+                    queue.add(newMove);
+                }
                 continue;
             }
 
@@ -149,16 +158,16 @@ public class Day19 implements IAdventDay {
         List<Possibility> possibilities = new ArrayList<>();
 
         if(canBuild(state, blueprint.geodeRobot())){
-            possibilities.add(new Possibility(new Robot(0, 0, 0, 1), blueprint.geodeRobot()));
+            possibilities.add(new Possibility(Robot.GEODE, blueprint.geodeRobot()));
         }
         if(canBuild(state, blueprint.obsidianRobot())){
-            possibilities.add(new Possibility(new Robot(0, 0, 1, 0), blueprint.obsidianRobot()));
+            possibilities.add(new Possibility(Robot.OBSIDIAN, blueprint.obsidianRobot()));
         }
         if(canBuild(state, blueprint.clayRobot())){
-            possibilities.add(new Possibility(new Robot(0, 1, 0, 0), blueprint.clayRobot()));
+            possibilities.add(new Possibility(Robot.CLAY, blueprint.clayRobot()));
         }
         if(canBuild(state, blueprint.oreRobot())){
-            possibilities.add(new Possibility(new Robot(1, 0, 0, 0), blueprint.oreRobot()));
+            possibilities.add(new Possibility(Robot.ORE, blueprint.oreRobot()));
         }
 
         possibilities.add(new Possibility(null, null));
