@@ -48,6 +48,10 @@ public class Day19 implements IAdventDay {
         static Robot OBSIDIAN = new Robot(0, 0, 1, 0);
         static Robot GEODE = new Robot(0, 0, 0, 1);
 
+        public Robot add(Robot robot) {
+            return new Robot(ore + robot.ore, clay + robot.clay, obsidian + robot.obsidian, geode + robot.geode);
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -67,7 +71,16 @@ public class Day19 implements IAdventDay {
         }
     }
 
-    record State(int ore, int clay, int obsidian, int geode) {}
+    record State(int ore, int clay, int obsidian, int geode) {
+
+        public State collect(Robot robot) {
+            return new State(ore + robot.ore, clay + robot.clay, obsidian + robot.obsidian, geode + robot.geode);
+        }
+
+        public State build(Recipe recipe){
+            return new State(ore - recipe.ore, clay - recipe.clay, obsidian - recipe.obsidian, geode);
+        }
+    }
 
     @Override
     public String part1(IInputHelper inputHelper) {
@@ -121,12 +134,11 @@ public class Day19 implements IAdventDay {
             }
             seen.add(move.hashCode());
 
-            State currentState = move.state;
-            Robot currentRobots = move.robots;
+            Robot currentRobots = move.robots();
 
-            currentState = new State(currentState.ore() + currentRobots.ore(), currentState.clay() + currentRobots.clay(), currentState.obsidian() + currentRobots.obsidian(), currentState.geode() + currentRobots.geode());
+            State currentState = move.state().collect(currentRobots);
             if(move.toBuild() != null){
-                currentRobots = new Robot(currentRobots.ore() + move.toBuild().ore(), currentRobots.clay() + move.toBuild().clay(), currentRobots.obsidian() + move.toBuild().obsidian(), currentRobots.geode() + move.toBuild().geode());
+                currentRobots = currentRobots.add(move.toBuild());
                 move = new Move(currentState, currentRobots, move.minute(), null);
             }
 
@@ -141,10 +153,10 @@ public class Day19 implements IAdventDay {
 
             for(Possibility possibility : possibilities){
                 State newState = currentState;
-                if(possibility.robot != null){
-                    newState = new State(currentState.ore() - possibility.recipe().ore(), currentState.clay() - possibility.recipe().clay(), currentState.obsidian() - possibility.recipe().obsidian(), currentState.geode());
+                if(possibility.robot() != null && possibility.recipe() != null){
+                    newState = currentState.build(possibility.recipe());
                 }
-                Move newMove = new Move(newState, currentRobots, move.minute() + 1, possibility.robot);
+                Move newMove = new Move(newState, currentRobots, move.minute() + 1, possibility.robot());
                 if(!seen.contains(newMove.hashCode())){
                     queue.add(newMove);
                 }
