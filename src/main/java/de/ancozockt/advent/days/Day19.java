@@ -80,6 +80,10 @@ public class Day19 implements IAdventDay {
         public State build(Recipe recipe){
             return new State(ore - recipe.ore, clay - recipe.clay, obsidian - recipe.obsidian, geode);
         }
+
+        public State copy(){
+            return new State(ore, clay, obsidian, geode);
+        }
     }
 
     @Override
@@ -88,7 +92,10 @@ public class Day19 implements IAdventDay {
 
         AtomicLong atomicLong = new AtomicLong(0);
         blueprints.forEach(blueprint -> {
-            int geodes = simulate(blueprint, 24);
+            maxTime = 24;
+            geodesBest = 0;
+            this.blueprint = blueprint;
+            int geodes = mostGeodes(new State(0, 0, 0,0), new Robot(1, 0, 0 ,0) ,0);
             atomicLong.getAndAdd((long) blueprint.id() * geodes);
         });
 
@@ -100,91 +107,64 @@ public class Day19 implements IAdventDay {
         List<Blueprint> blueprints = parseInput(inputHelper).stream()
                 .filter(blueprint -> blueprint.id() >= 1 && blueprint.id() <= 3).toList();
 
-        long result = 1;
-        for(Blueprint blueprint : blueprints) {
-            result *= simulate(blueprint, 32);
+        int quality = 1;
+        for(int i = 0; i < Math.min(blueprints.size(), 3); i++){
+            this.blueprint = blueprints.get(i);
+            maxTime = 32;
+            geodesBest = 0;
+            int geodes = mostGeodes(new State(0, 0, 0,0), new Robot(1, 0, 0 ,0),0);
+            quality *= geodes;
         }
 
-        return Long.toString(result);
+        return Integer.toString(quality);
     }
 
-    private int simulate(Blueprint blueprint, int minutes){
-        State state = new State(0, 0, 0, 0);
-        Robot robots = new Robot(1, 0, 0, 0);
+    private int geodesBest;
+    private int maxTime;
+    private Blueprint blueprint;
 
-        HashSet<Integer> seen = new HashSet<>();
-        LinkedList<Move> queue = new LinkedList<>();
-        queue.add(new Move(state, robots, 0, null));
-
-        int maxGeodes = 0;
-
-        while (!queue.isEmpty()){
-            Move move = queue.poll();
-
-            if(move.minute() > minutes){
-                continue;
-            }
-
-            if(move.state().geode() > maxGeodes){
-                maxGeodes = move.state().geode();
-            }
-
-            if(seen.contains(move.hashCode())){
-                continue;
-            }
-            seen.add(move.hashCode());
-
-            Robot currentRobots = move.robots();
-
-            State currentState = move.state().collect(currentRobots);
-            if(move.toBuild() != null){
-                currentRobots = currentRobots.add(move.toBuild());
-                move = new Move(currentState, currentRobots, move.minute(), null);
-            }
-
-            List<Possibility> possibilities = getPossibilities(blueprint, currentState);
-            if(possibilities.size() == 0){
-                Move newMove = new Move(currentState, currentRobots, move.minute() + 1, null);
-                if(!seen.contains(newMove.hashCode())){
-                    queue.add(newMove);
-                }
-                continue;
-            }
-
-            for(Possibility possibility : possibilities){
-                State newState = currentState;
-                if(possibility.robot() != null && possibility.recipe() != null){
-                    newState = currentState.build(possibility.recipe());
-                }
-                Move newMove = new Move(newState, currentRobots, move.minute() + 1, possibility.robot());
-                if(!seen.contains(newMove.hashCode())){
-                    queue.add(newMove);
-                }
-            }
+    public int mostGeodes(State state, Robot robot, int time) {
+        if(time == maxTime) {
+            geodesBest = Math.max(geodesBest, state.geode());
+            return state.geode();
         }
 
-        return maxGeodes;
-    }
+        int minsLeft = maxTime - time;
+        int maxGeodesPossible = state.geode();
+        for(int i = 0; i < minsLeft; i++)
+            maxGeodesPossible += robot.geode() + i;
+        if(maxGeodesPossible < geodesBest)
+            return 0;
 
-    private List<Possibility> getPossibilities(Blueprint blueprint, State state){
-        List<Possibility> possibilities = new ArrayList<>();
+        int no = state.ore() + robot.ore;
+        int nc = state.clay() + robot.clay();
+        int nob = state.obsidian() + robot.obsidian();
+        int ng = state.geode() + robot.geode();
 
-        if(canBuild(state, blueprint.geodeRobot())){
-            possibilities.add(new Possibility(Robot.GEODE, blueprint.geodeRobot()));
-        }
-        if(canBuild(state, blueprint.obsidianRobot())){
-            possibilities.add(new Possibility(Robot.OBSIDIAN, blueprint.obsidianRobot()));
-        }
-        if(canBuild(state, blueprint.clayRobot())){
-            possibilities.add(new Possibility(Robot.CLAY, blueprint.clayRobot()));
-        }
-        if(canBuild(state, blueprint.oreRobot())){
-            possibilities.add(new Possibility(Robot.ORE, blueprint.oreRobot()));
-        }
+        if(state.ore() >= blueprint.geodeRobot().ore() && state.obsidian() >= blueprint.geodeRobot().obsidian())
+            return mostGeodes(new State(no - blueprint.geodeRobot().ore(), nc, nob - blueprint.geodeRobot().obsidian(), ng),
+                    new Robot(robot.ore(), robot.clay(), robot.obsidian(), robot.geode() + 1), time + 1);
+        if(robot.clay() >= blueprint.obsidianRobot().clay() && robot.obsidian() < blueprint.geodeRobot().obsidian()
+                && state.ore() >= blueprint.obsidianRobot().ore() && state.clay() >= blueprint.obsidianRobot().clay())
+            return mostGeodes(new State(no - blueprint.obsidianRobot().ore(), nc - blueprint.obsidianRobot().clay(), nob, ng),
+                    new Robot(robot.ore(), robot.clay(), robot.obsidian() + 1, robot.geode()), time + 1);
 
-        possibilities.add(new Possibility(null, null));
+        int best = 0;
+        if(robot.obsidian() < blueprint.geodeRobot().obsidian()
+                && state.ore() >= blueprint.obsidianRobot().ore() && state.clay() >= blueprint.obsidianRobot().clay())
+            best = Math.max(best,mostGeodes(new State(no - blueprint.obsidianRobot().ore(), nc - blueprint.obsidianRobot().clay(), nob, ng),
+                    new Robot(robot.ore(), robot.clay(), robot.obsidian() + 1, robot.geode()), time + 1));
+        if(robot.clay() < blueprint.obsidianRobot().clay() && state.ore() >= blueprint.clayRobot().ore())
+            best = Math.max(best, mostGeodes(new State(no - blueprint.clayRobot().ore(),nc,nob,ng),
+                    new Robot(robot.ore(), robot.clay() + 1, robot.obsidian(), robot.geode()),time + 1));
+        if(robot.ore() < 4 && state.ore() >= blueprint.oreRobot().ore())
+            best = Math.max(best,mostGeodes(new State(no - blueprint.oreRobot().ore(),nc,nob,ng),
+                    new Robot(robot.ore() + 1, robot.clay(), robot.obsidian(), robot.geode()),time + 1));
+        if(state.ore() <= 4)
+            best = Math.max(best,mostGeodes(new State(no,nc,nob,ng),
+                    new Robot(robot.ore(), robot.clay(), robot.obsidian(), robot.geode()),time + 1));
 
-        return possibilities;
+        return best;
     }
 
     private boolean canBuild(State state, Recipe recipe){
