@@ -23,6 +23,9 @@ public class DayTest {
 
         System.out.println("======= Testing Day: " + inputData.day() + " =======");
 
+        String className = adventDay.getClass().getSimpleName();
+
+        assert Integer.parseInt(className.replace("Day", "")) == inputData.day();
         assert inputData.year() == 2022;
 
         String[] outputs = readOutputs(inputData.day());
@@ -47,9 +50,9 @@ public class DayTest {
                 }
                 System.out.println("Part-1: ✓");
             }else{
-                System.out.println("Part-2: x (could not be tested)");
+                System.out.println("Part-1: x (could not be tested)");
             }
-        }catch (NullPointerException ignored){ }
+        }catch (NullPointerException exception){ }
 
 
         try{
